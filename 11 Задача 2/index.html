@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор доставки</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; }
+        button { padding: 10px 15px; background-color: #3498db; color: white; border: none; cursor: pointer; }
+        .error { color: red; margin-top: 5px; }
+         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Калькулятор стоимости доставки</h1>
+    <form id="deliveryForm">
+        <div class="form-group">
+            <label for="itemName">Название товара:</label>
+            <input type="text" id="itemName" required>
+            <div class="error" id="itemNameError"></div>
+        </div>
+         <div class="form-group">
+            <label for="itemWeight">Вес товара (кг):</label>
+            <input type="number" id="itemWeight" required min="0">
+            <div class="error" id="itemWeightError"></div>
+        </div>
+        <div class="form-group">
+           <label for="deliveryDistance">Расстояние доставки (км):</label>
+            <input type="number" id="deliveryDistance" required min="0">
+            <div class="error" id="deliveryDistanceError"></div>
+        </div>
+         <button type="submit">Добавить товар</button>
+    </form>
+
+    <h2>Список товаров</h2>
+    <table id="itemsTable">
+      <thead>
+         <tr>
+           <th>Название товара</th>
+           <th>Вес (кг)</th>
+           <th>Расстояние (км)</th>
+            <th>Стоимость доставки</th>
+         </tr>
+      </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        const form = document.getElementById('deliveryForm');
+        const itemNameInput = document.getElementById('itemName');
+        const itemWeightInput = document.getElementById('itemWeight');
+        const deliveryDistanceInput = document.getElementById('deliveryDistance');
+        const itemNameError = document.getElementById('itemNameError');
+        const itemWeightError = document.getElementById('itemWeightError');
+       const deliveryDistanceError = document.getElementById('deliveryDistanceError');
+        const itemsTableBody = document.querySelector('#itemsTable tbody');
+
+         let items = [];
+
+        function validateForm() {
+            let isValid = true;
+            itemNameError.textContent = '';
+            itemWeightError.textContent = '';
+            deliveryDistanceError.textContent = '';
+
+             if (!itemNameInput.value.trim()) {
+                itemNameError.textContent = 'Введите название товара.';
+                isValid = false;
+            }
+
+            if (itemWeightInput.value <= 0 ) {
+                itemWeightError.textContent = 'Вес должен быть больше нуля.';
+                isValid = false;
+            }
+             if (deliveryDistanceInput.value <= 0 ) {
+                deliveryDistanceError.textContent = 'Расстояние должно быть больше нуля.';
+                isValid = false;
+             }
+
+
+            return isValid;
+        }
+
+       function calculateDeliveryCost(weight, distance) {
+            return (weight * distance) / 10;
+        }
+
+       function addItemToTable() {
+            if (!validateForm()) {
+                return;
+            }
+           const itemName = itemNameInput.value;
+          const itemWeight = parseFloat(itemWeightInput.value);
+          const deliveryDistance = parseFloat(deliveryDistanceInput.value);
+
+            const deliveryCost = calculateDeliveryCost(itemWeight, deliveryDistance);
+
+         items.push({
+                name: itemName,
+                 weight: itemWeight,
+                 distance: deliveryDistance,
+                cost: deliveryCost
+           });
+           renderItems();
+          form.reset();
+        }
+       function renderItems() {
+         itemsTableBody.innerHTML = '';
+           items.forEach(item => {
+               const row = document.createElement('tr');
+               row.innerHTML = `
+                  <td>${item.name}</td>
+                  <td>${item.weight}</td>
+                  <td>${item.distance}</td>
+                   <td>${item.cost.toFixed(2)}</td>
+              `;
+             itemsTableBody.appendChild(row);
+          });
+      }
+
+        form.addEventListener('submit', (e) => {
+           e.preventDefault();
+          addItemToTable();
+        });
+
+    </script>
+</body>
+</html>

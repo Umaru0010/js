@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка промокода</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f0f0; }
+        .form-container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .promo-form { display: flex; flex-direction: column; align-items: center;}
+         .promo-form input[type="text"] { padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .promo-form button { padding: 10px 15px; background-color: #3498db; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        .promo-form button:hover { background-color: #2980b9; }
+        .promo-form .success { margin-top: 10px; padding: 10px; background-color: #e6f9e6; border: 1px solid #a3d8a3; border-radius: 4px; color: #2e7d32; text-align: center; }
+       .promo-form .activated { background-color: #ccffcc; border: 1px solid #a0d1a0; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form class="promo-form" id="promoForm">
+           <input type="text" id="promoCodeInput" placeholder="Введите промокод">
+           <button type="submit">Применить</button>
+             <div id="promoMessage" class="success"></div>
+       </form>
+    </div>
+
+    <script>
+        const promocodeObj = {
+            promocode: "PROM50",
+            gift: "Скидка 50%"
+        };
+          const promoForm = document.getElementById('promoForm');
+         const promoCodeInput = document.getElementById('promoCodeInput');
+         const promoMessage = document.getElementById('promoMessage');
+       function getCookie() {
+          return document.cookie.split('; ').reduce((acc, item) => {
+            const [name, value] = item.split('=')
+            acc[name] = value
+            return acc
+          }, {})
+        }
+
+         function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+              document.cookie = name + "=" + (value || "") + expires + "; path=/";
+          }
+        function applyPromoCode(code) {
+            if (code === promocodeObj.promocode) {
+               setCookie('promoCode', code, 7);
+               promoForm.classList.add('activated');
+              promoMessage.textContent = `Промокод "${promocodeObj.promocode}" активирован! Подарок: ${promocodeObj.gift}`;
+             }
+              else {
+               promoMessage.textContent = '';
+               promoForm.classList.remove('activated')
+             }
+         }
+
+       promoForm.addEventListener('submit', (e) => {
+           e.preventDefault();
+           const code = promoCodeInput.value;
+           applyPromoCode(code);
+         });
+          // Автоматически активируем промокод из cookie при загрузке страницы
+        const cookies = getCookie();
+         if (cookies.promoCode) {
+          promoCodeInput.value = cookies.promoCode;
+             applyPromoCode(cookies.promoCode)
+         }
+    </script>
+</body>
+</html>

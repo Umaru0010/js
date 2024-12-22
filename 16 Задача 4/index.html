@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка сети</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #notification {
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+             display: none;
+            text-align: center;
+        }
+        #notification.show {
+             display: block;
+         }
+        #notification.error {
+           background-color: #f8d7da;
+             border-color: #f5c6cb;
+            color: #721c24;
+         }
+         #notification.slow {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+            color: #856404;
+         }
+    </style>
+</head>
+<body>
+    <h1>Проверка сети</h1>
+     <div id="notification"></div>
+
+    <script>
+        const notificationDiv = document.getElementById('notification');
+        const pingUrl = 'https://sb-film.skillbox.cc/ping';
+
+         function showNotification(message, type = '') {
+            notificationDiv.textContent = message;
+            notificationDiv.className = `show ${type}`;
+        }
+
+        function hideNotification() {
+            notificationDiv.className = '';
+             notificationDiv.textContent = '';
+         }
+
+        async function checkNetwork() {
+             try {
+                const startTime = Date.now();
+                const response = await fetch(pingUrl, { method: 'POST' });
+                const endTime = Date.now();
+
+                if (response.ok) {
+                    hideNotification();
+                   if(endTime - startTime > 500) {
+                      showNotification('Медленное соединение', 'slow');
+                    }
+                 } else {
+                    showNotification('Неполадки с сетью', 'error');
+                }
+           } catch (error) {
+                showNotification('Неполадки с сетью', 'error');
+               console.error("Ошибка запроса:", error);
+            }
+        }
+        setInterval(checkNetwork, 5000);
+          checkNetwork(); // Вызов при загрузке страницы
+    </script>
+</body>
+</html>

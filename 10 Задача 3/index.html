@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Сортировка цен</title>
+<style>
+body { font-family: sans-serif; }
+ul { list-style: none; padding: 0; }
+li { margin-bottom: 5px; padding: 5px; border: 1px solid #ccc; }
+button { padding: 8px 15px; margin: 5px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Список цен</h1>
+<ul id="priceList"></ul>
+<button id="sortAsc">Сортировать по возрастанию</button>
+<button id="sortDesc">Сортировать по убыванию</button>
+<script>
+const priceList = document.getElementById('priceList');
+const sortAscBtn = document.getElementById('sortAsc');
+const sortDescBtn = document.getElementById('sortDesc');
+let prices = [100, 500, 250, 750, 300];
+
+function renderPrices(pricesToDisplay) {
+  priceList.innerHTML = ''; // Очищаем список перед рендерингом
+  pricesToDisplay.forEach(price => {
+    const listItem = document.createElement('li');
+    listItem.textContent = price;
+    priceList.appendChild(listItem);
+  });
+}
+
+
+function sortPricesAsc() {
+  prices.sort((a, b) => a - b);
+  renderPrices(prices);
+}
+
+
+function sortPricesDesc() {
+  prices.sort((a, b) => b - a);
+  renderPrices(prices);
+}
+
+sortAscBtn.addEventListener('click', sortPricesAsc);
+sortDescBtn.addEventListener('click', sortPricesDesc);
+
+renderPrices(prices); // Инициализируем отображение списка
+</script>
+</body>
+</html>

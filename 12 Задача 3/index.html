@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка промокода</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; display: flex; flex-direction: column; align-items: center; }
+        .form-group { margin-bottom: 15px; }
+         label { display: block; margin-bottom: 5px; }
+        input[type="text"] { padding: 10px; border: 1px solid #ccc; }
+         button { padding: 10px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        .message { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Проверка промокода</h1>
+     <div class="form-group">
+        <label for="promocode">Введите промокод:</label>
+        <input type="text" id="promocode" placeholder="Промокод">
+    </div>
+    <button id="checkBtn">Проверить</button>
+     <div id="message" class="message"></div>
+
+    <script>
+      const promocodeArr = [
+        {
+          promocode: 'PROM10',
+          gift: "Скидка 10%"
+        },
+        {
+          promocode: 'PROM50',
+          gift: "Скидка 50%"
+        },
+        {
+          promocode: 'GIFT',
+          gift: "Подарок в корзине"
+        }
+      ];
+
+        const promocodeInput = document.getElementById('promocode');
+        const checkBtn = document.getElementById('checkBtn');
+        const messageDiv = document.getElementById('message');
+
+       checkBtn.addEventListener('click', () => {
+          const enteredPromocode = promocodeInput.value.trim().toUpperCase();
+          let foundGift = null;
+
+          for (const item of promocodeArr) {
+              if(item.promocode === enteredPromocode) {
+                foundGift = item.gift;
+                break;
+            }
+          }
+
+          if (foundGift) {
+             messageDiv.textContent = `Промокод применен! Ваш подарок: ${foundGift}`;
+        } else {
+             messageDiv.textContent = 'Промокод недействителен.';
+          }
+     });
+    </script>
+</body>
+</html>

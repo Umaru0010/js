@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка банковской карты</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; display: flex; flex-direction: column; align-items: center; }
+        .form-group { margin-bottom: 15px; }
+         label { display: block; margin-bottom: 5px; }
+        input[type="text"], select { padding: 10px; border: 1px solid #ccc; }
+         #card {
+            width: 300px;
+            height: 180px;
+            border: 2px solid #000;
+            margin-top: 20px;
+            padding: 20px;
+            display: flex;
+             justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.2em;
+            color: white;
+             background-color: #ddd;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            background-color: #e8f0fe;
+             outline: none;
+         }
+    </style>
+</head>
+<body>
+    <h1>Настройка банковской карты</h1>
+    <div class="form-group">
+         <label for="cardText">Текст на карте:</label>
+       <input type="text" id="cardText" placeholder="Введите текст">
+    </div>
+
+    <div class="form-group">
+        <label for="cardColor">Цвет карты:</label>
+         <select id="cardColor">
+            <option value="red">Красный</option>
+            <option value="blue">Синий</option>
+            <option value="green">Зелёный</option>
+        </select>
+    </div>
+
+   <p id="card">Текст вашей карты</p>
+
+    <script>
+        const cardText = document.getElementById('cardText');
+        const cardColor = document.getElementById('cardColor');
+         const card = document.getElementById('card');
+
+       cardText.addEventListener('input', () => {
+            card.textContent = cardText.value || 'Текст вашей карты';
+        });
+
+      cardText.addEventListener('focus', () => {
+         cardText.style.borderColor = '#007bff';
+            cardText.style.backgroundColor = '#e8f0fe';
+        });
+
+       cardText.addEventListener('blur', () => {
+            cardText.style.borderColor = '#ccc';
+             cardText.style.backgroundColor = '';
+        });
+
+        cardColor.addEventListener('change', () => {
+            card.style.backgroundColor = cardColor.value;
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Имитация запросов</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .image-row { margin-bottom: 20px; }
+        .image-row img { margin-right: 10px; max-width: 100px; max-height: 100px; }
+    </style>
+</head>
+<body>
+    <div id="imageContainer"></div>
+
+    <script>
+        const imageContainer = document.getElementById('imageContainer');
+
+        function fetchImages1() {
+            return new Promise(resolve => {
+                const delay = Math.random() * 3000 + 2000; // Случайное время от 2 до 5 секунд
+                setTimeout(() => {
+                   const images = [
+                        'https://placekitten.com/100/100',
+                         'https://placekitten.com/120/120',
+                        'https://placekitten.com/110/110'
+                    ];
+                    resolve(images);
+                }, delay);
+            });
+        }
+
+        function fetchImages2() {
+             return new Promise(resolve => {
+                const delay = Math.random() * 3000 + 2000; // Случайное время от 2 до 5 секунд
+                 setTimeout(() => {
+                    const images = [
+                         'https://placekitten.com/130/130',
+                          'https://placekitten.com/140/140',
+                       'https://placekitten.com/150/150'
+                    ];
+                     resolve(images);
+                }, delay);
+             });
+        }
+
+        fetchImages1()
+            .then(images => {
+              const row = document.createElement('div');
+                row.classList.add('image-row');
+              images.forEach(imageUrl => {
+                 const img = document.createElement('img');
+                  img.src = imageUrl;
+                  row.appendChild(img);
+                });
+                imageContainer.appendChild(row);
+            });
+
+        fetchImages2()
+            .then(images => {
+               const row = document.createElement('div');
+               row.classList.add('image-row');
+                images.forEach(imageUrl => {
+                  const img = document.createElement('img');
+                   img.src = imageUrl;
+                 row.appendChild(img);
+                });
+                 imageContainer.appendChild(row);
+           });
+    </script>
+</body>
+</html>

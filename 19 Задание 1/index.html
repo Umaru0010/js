@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список доставок</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .delivery-card {
+            border: 1px solid #ddd;
+             padding: 15px;
+            margin-bottom: 10px;
+           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Список доставок</h1>
+     <div id="deliveryContainer"></div>
+    <script type="module">
+       import { Delivery } from './delivery.js';
+        const deliveryContainer = document.getElementById('deliveryContainer');
+
+          const deliveryArr = [
+             new Delivery("Ольга", "ул. Вымыслов, д. 12", 8),
+              new Delivery("Дмитрий", "ул. Задачная, д. 7", 3),
+              new Delivery("Оля", "ул. Ткачей, д. 43", 11)
+         ];
+
+        deliveryArr.forEach(delivery => {
+           deliveryContainer.appendChild(delivery.element);
+        });
+    </script>
+</body>
+</html>

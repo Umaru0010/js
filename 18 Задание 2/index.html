@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; display: flex; flex-direction: column; align-items: center; }
+        #progress-bar {
+            width: 0;
+            height: 20px;
+             background-color: #4CAF50;
+            max-width: 500px;
+            transition: transform linear;
+           transform-origin: left;
+        }
+       #time-display {
+             margin-top: 10px;
+             text-align: center;
+            font-size: 1.2em;
+         }
+     </style>
+</head>
+<body>
+    <div id="progress-bar"></div>
+   <div id="time-display">0 секунд</div>
+    <script>
+        const progressBar = document.getElementById('progress-bar');
+      const timeDisplay = document.getElementById('time-display');
+
+        function progress(time) {
+           const duration = Math.max(time, 2); // Минимальное время 2 секунды
+           progressBar.style.transitionDuration = `${duration}s`;
+            progressBar.style.transform = 'scaleX(1)';
+
+            let seconds = 0;
+              const timerInterval = setInterval(() => {
+               seconds++;
+               timeDisplay.textContent = `${seconds} секунд`;
+               if (seconds >= duration) {
+                clearInterval(timerInterval);
+            }
+        }, 1000);
+        }
+
+       progress(5); // Начнем анимацию на 5 секунды
+
+    </script>
+</body>
+</html>
